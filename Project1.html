@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RPS Game</title>
     <link rel="icon" type="image/png" href="fav.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
             background: #263238;
@@ -46,7 +47,8 @@
         }
         big{
             font-size: 2rem;
-            margin: 5px;
+            display: flex;
+            justify-content: space-evenly;
         }
         span{
             font-size: 1.5rem;
@@ -60,6 +62,8 @@
             text-align: center;
             padding: 10px;
             margin: 10px;
+            font-size: 1.1rem;
+            border-radius: 10px;
         }
         .History{
             background-color: rgb(66, 63, 80);
@@ -68,18 +72,63 @@
             padding: 10px;
             border-radius: 5px;
         }
+        button {
+            padding: 12px 25px;
+            background: rgb(66, 63, 80);
+            color: white;
+            border: 2px solid #ffffff34;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+        button:hover {
+            background: rgb(90, 86, 110);
+            border-color: white;
+        }
+        .Instruction{
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 10px;
+            background-color:#2b292934;
+        }
+        li{
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
     <main>
         <h1>Welcome To Rock Paper Scissor Game</h1>
+        <div class="Instruction">
+            <Span>Instruction:</Span>
+            <ol>
+                <li>You can change the Match point by the "Match Point" Option given</li>
+                <li>Default Match point is 5</li>
+                <li>Click on any option to select you choice</li>
+                <li>Computer will also choose randomly any option</li>
+                <li>Result will be shown in the given Screens</li>
+                <li>
+                    Result will be decides as:
+                    <ul>
+                        <li>Rock beats Scissor</li>
+                        <li>Scissor beats Paper</li>
+                        <li>Paper beats Rock</li>
+                    </ul>
+                </li>
+                <li>Start Playing and Enjoy</li>
+            </ol>
+        </div>
+        <br>
+        <hr>
+        <br><br>
         <div class="Options">
             <img src="rock.png" alt="Rock" id="Rock">
             <img src="paper.png" alt="Paper" id="Paper">
             <img src="scissor.png" alt="Scissor" id="Scissor">
         </div>
         <br><br>
-        <big>Current Match Score:</big>
+        <big>Current Match Score: <button>Match Points</button></big>
         <div class="Result">
             <div id="user">
                 <p id="One">0</p>
@@ -91,21 +140,23 @@
             </div>
         </div>
         <div class="Message">
-            Click Any Option To Start 
-            One match is of 5 points
+            Result of Each Strike will be shown here
         </div>
         <hr>
         <h2>Score Board</h2>
         <div class="History">
+            Total score of last Match will be shown Here
         </div>
     </main>
     <script>
         const userScore=document.querySelector("#One");
         const compScore=document.querySelector("#Two");
         const message=document.querySelector(".Message");
+        const choose=document.querySelectorAll("img");
+        const btn=document.querySelector("button");
         let uval=0;
         let cval=0;
-        let count=0;
+        let a=5;
         function reset(){
             let result="";
             const his=document.querySelector(".History");
@@ -127,7 +178,7 @@
             cval=0;
             userScore.innerText=0;
             compScore.innerText=0;
-            message.innerText="Click Any Option To Start";
+            message.innerText="See the Result (Can change Game point of next match)";
             message.style.backgroundColor="black";
         }
         function update(res,x){
@@ -143,6 +194,9 @@
                 message.style.backgroundColor="black";
             }
             message.innerText=res;
+            if(userScore.innerText==a || compScore.innerText==a){
+                    reset()
+            }
         }
         function check(user,comp){
             const checker={Rock:3,Scissor:2,Paper:1};
@@ -158,19 +212,28 @@
                 update(`Computer Wins! Computer's ${comp} beats Player's ${user}`,1);
             }
         }
-        const choose=document.querySelectorAll("img");
         choose.forEach(option=>{
             option.addEventListener("click",()=>{
                 let userChoice=option.getAttribute("id");
                 const l=['Rock','Scissor','Paper'];
                 let compChoice=l[Math.floor(Math.random()*3)];
                 check(userChoice,compChoice);
-                count++;
-                if (count==5){
-                    count=0;
-                    reset();
-                }
             });
+        });
+        btn.addEventListener("click",()=>{
+            if (userScore.innerText==0 && compScore.innerText==0){
+                while (true){
+                    a=prompt("Enter the Highest winning point:");
+                    if (/^[1-9]\d*$/.test(a)){
+                        a=Number(a);
+                        break
+                    }else {
+                        alert("Enter Only A valid match point:")
+                    }
+                }
+            }else{
+                alert("Game is going on You can not change Game points in between")
+            }
         });
     </script>
 </body>
