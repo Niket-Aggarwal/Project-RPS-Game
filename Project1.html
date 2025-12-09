@@ -6,6 +6,144 @@
     <title>RPS Game</title>
     <link rel="icon" type="image/png" href="fav.png">
     <style>
+        /* GENERAL PAGE STYLE */
+        body {
+            background: #0B0F19;
+            color: #F5F7FA;
+            font-family: "Poppins", sans-serif;
+        }
+        main {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        /* HEADING */
+        h1, h2 {
+            text-align: center;
+            color: #5F8CFF;
+        }
+        
+        /* INSTRUCTION BOX */
+        .Instruction {
+            background: #1A2333;
+            padding: 20px;
+            border-radius: 12px;
+            line-height: 1.6;
+            border: 1px solid #2B6DFF33;
+        }
+        .Instruction span {
+            color: #2B6DFF;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        /* INPUT + BUTTON AREA */
+        .Flow label {
+            font-size: 1.2rem;
+        }
+        .Flow input {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            background: #111827;
+            color: white;
+            font-size: 1rem;
+        }
+        .Flow div {
+            margin-bottom: 10px;
+        }
+        /* BUTTONS */
+        button {
+            background: #2B6DFF;
+            color: white;
+            padding: 8px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #5F8CFF;
+            transform: scale(1.05);
+        }
+        button:active {
+            transform: scale(0.96);
+        }
+        /* GAME OPTIONS - IMAGES */
+        .Options {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+        .Options img {
+            width: 120px;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        .Options img:hover {
+            background: #2B6DFF33;
+            transform: scale(1.1);
+        }
+        /* SCORE DISPLAY */
+        .Result {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 70px;
+        }
+        .Result div {
+            background: #1A2333;
+            padding: 15px 25px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 120px;
+            border: 1px solid #2B6DFF33;
+        }
+        .Result p {
+            font-size: 3rem;
+            margin: 0;
+            color: #5F8CFF;
+        }
+        /* MESSAGE BOX */
+        .Message {
+            margin: 20px auto;
+            background: black;
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
+            width: 70%;
+            font-size: 1.1rem;
+            border: 2px solid #2B6DFF55;
+        }
+        /* SCORE HISTORY */
+        .History {
+            margin-top: 10px;
+            background: #1A2333;
+            padding: 20px;
+            border-radius: 12px;
+            min-height: 60px;
+            border: 1px solid #2B6DFF33;
+        }
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 600px) {
+            main {
+                width: 95%;
+            }
+            .Options img {
+                width: 90px;
+            }
+            .Result {
+                gap: 30px;
+            }
+            .Message {
+                width: 90%;
+            }
+        }
+    </style>
+    <!-- <style>
+        /* Background */
         body {
             background: #263238;
             padding: 30px;
@@ -17,21 +155,8 @@
             padding: 25px;
             border-radius: 12px;
         }
-        img{
-            height: 150px;
-            width: 150px;
-            border-radius: 50%;
-        }
-        img:hover{
-            transform: scale(1.15);
-            cursor: pointer;
-            border:4px solid black;
-            border-radius: 50%;
-        }
-        .Options{
-            display: flex;
-            justify-content: space-between;
-        }
+
+        /* Headings */
         h1{
             text-align: center;
             color: white;
@@ -40,53 +165,8 @@
             text-align: center;
             color:black;
         }
-        .Result{
-            display: flex;
-            justify-content: space-evenly;
-        }
-        .Match{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-left: 27px;
-        }
-        span{
-            font-size: 1.5rem;
-        }
-        p{
-            font-size: 1.5rem;
-        }
-        .Message{
-            background-color: black;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            margin: 10px;
-            font-size: 1.1rem;
-            border-radius: 10px;
-        }
-        .History{
-            background-color: rgb(66, 63, 80);
-            color: rgb(200, 255, 255);
-            font-size: 1.2rem;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        button {
-            padding: 12px 25px;
-            background: rgb(66, 63, 80);
-            color: white;
-            border: 2px solid #ffffff34;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s ease;
-        }
-        button:hover {
-            background: rgb(90, 86, 110);
-            border-color: rgb(59, 59, 59);
-            transform: scale(1.07);     
-        }
+
+        /* instructions */
         .Instruction{
             border: 1px solid black;
             border-radius: 10px;
@@ -96,6 +176,8 @@
         li{
             font-size: 1.2rem;
         }
+
+        /* Username*/
         label {
             font-size: 2rem;
         }
@@ -125,6 +207,16 @@
             justify-content: space-evenly;
             align-items: center;
         }
+
+        /* Match points */
+        .Match{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-left: 27px;
+        }
+
+        /* Game start */
         #start{
             background-color: rgb(54, 179, 75);
             color: white;
@@ -144,11 +236,75 @@
             justify-content: space-evenly;
             align-items: center;
         }
-    </style>
+
+        /* Options */
+        .Options{
+            display: flex;
+            justify-content: space-between;
+        }
+        img{
+            height: 150px;
+            width: 150px;
+            border-radius: 50%;
+        }
+        img:hover{
+            transform: scale(1.15);
+            cursor: pointer;
+            border:4px solid black;
+            border-radius: 50%;
+        }
+        
+        /* All meaage and statement */
+        .Result{
+            display: flex;
+            justify-content: space-evenly;
+        }
+        .Message{
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin: 10px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+        }
+        .History{
+            background-color: rgb(66, 63, 80);
+            color: rgb(200, 255, 255);
+            font-size: 1.2rem;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* common */
+        button {
+            padding: 12px 25px;
+            background: rgb(66, 63, 80);
+            color: white;
+            border: 2px solid #ffffff34;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+        button:hover {
+            background: rgb(90, 86, 110);
+            border-color: rgb(59, 59, 59);
+            transform: scale(1.07);     
+        }
+        span{
+            font-size: 1.5rem;
+        }
+        p{
+            font-size: 1.5rem;
+        }
+    </style> -->
 </head>
 <body>
     <main>
         <h1>Welcome To Rock Paper Scissor Game</h1>
+
+        <!-- instruction -->
         <div class="Instruction">
             <Span>Instruction:</Span>
             <ol>
@@ -175,6 +331,8 @@
             </ol>
         </div>
         <br><hr><br>
+
+        <!-- Entries and start -->
         <div class="Flow">
             <div class="username">
                 <label>Username:</label>
@@ -185,22 +343,25 @@
             </div>
             <br>
             <div class="Match">
-                <label id="x">Match Point: 5</label>
+                <label id="x">Current Match Point: 5</label>
                 <button id="game">Match Points</button>
             </div>
             <br>
             <div class="start">
                 <button id="start">Start Game</button>
             </div>
-            <br><hr><br>
         </div>
-        <br><br>
+        <br><hr><br>
+
+        <!-- User choice -->
         <div class="Options">
             <img src="rock.png" alt="Rock" id="Rock">
             <img src="paper.png" alt="Paper" id="Paper">
             <img src="scissor.png" alt="Scissor" id="Scissor">
         </div>
         <br>
+
+        <!-- display -->
         <div class="Result">
             <div id="user">
                 <p id="One">0</p>
@@ -211,16 +372,22 @@
                 <span>Computer</span>
             </div>
         </div>
+
+        <!-- Messages -->
         <div class="Message">
             Result of Each Strike will be shown here
         </div>
         <hr>
+
+        <!-- Last match score -->
         <h2>Score Board</h2>
         <div class="History">
             Total score of last Match will be shown Here
         </div>
     </main>
     <script>
+
+        // All global variable
         const userScore=document.querySelector("#One");
         const compScore=document.querySelector("#Two");
         const message=document.querySelector(".Message");
@@ -232,12 +399,16 @@
         let cval=0;
         let a=5;
         let Player="Player";
+
+        //main
         function main(e){
             let userChoice=e.target.id;
             const l=['Rock','Scissor','Paper'];
             let compChoice=l[Math.floor(Math.random()*3)];
             check(userChoice,compChoice);
         };
+
+        // Reset all things
         function reset(){
             let result="";
             const his=document.querySelector(".History");
@@ -269,7 +440,9 @@
             compScore.innerText=0;
             message.innerText="See the Result (You can now change the name or match points)";
             message.style.backgroundColor="black";
-        }
+        };
+
+        // updates the page
         function update(res,x){
             if(x==1){
                 message.style.backgroundColor="red";
@@ -285,8 +458,9 @@
             message.innerText=res;
             if(userScore.innerText==a || compScore.innerText==a){
                     reset()
-            };
-        };
+        }};
+
+        // Checks the conditions
         function check(user,comp){
             const checker={Rock:3,Scissor:2,Paper:1};
             if(user===comp){
@@ -299,8 +473,9 @@
                 update(`${Player} Wins! ${Player}'s ${user} beats Computer's ${comp}`,2);
             }else{
                 update(`Computer Wins! Computer's ${comp} beats ${Player}'s ${user}`,1);
-            };
-        };
+        }};
+
+        // Match point inputs
         btn1.addEventListener("click",()=>{
             if (userScore.innerText==0 && compScore.innerText==0){
                 while (true){
@@ -311,12 +486,12 @@
                         break
                     }else {
                         alert("Enter Only A valid match point:")
-                    };
-                };
+                    }};
             }else{
                 alert("Game is going on You can not change Game points in between")
-            };
-        });
+        }});
+
+        // User name inputs
         btn2.addEventListener("click",()=>{
             let b=document.querySelector("input").value;
             if (userScore.innerText==0 && compScore.innerText==0){
@@ -327,8 +502,7 @@
                         return;
                     }else{
                         break;
-                    };
-                };
+                }};
                 if(b===''){
                     Player="Player"
                     document.querySelector("#name").innerText=Player;
@@ -343,8 +517,9 @@
                 }else{
                     document.querySelector("input").value=Player;
                 };
-            }
-        });
+        }});
+
+        // Game start controller
         btn3.addEventListener("click",()=>{
             if (btn3.innerText=="Start Game"){
                 btn3.innerText="Stop Game";
@@ -364,9 +539,7 @@
                 btn.remove();
                 choose.forEach(option=>{
                     option.removeEventListener("click",main);
-                });
-            }
-        });
+        })}});
     </script>
 </body>
 </html>
