@@ -44,14 +44,11 @@
             display: flex;
             justify-content: space-evenly;
         }
-        big{
-            font-size: 2rem;
-            margin-left: 5%;
-        }
         .Match{
             display: flex;
-            justify-content: space-evenly;
+            justify-content: space-between;
             align-items: center;
+            margin-left: 27px;
         }
         span{
             font-size: 1.5rem;
@@ -88,6 +85,7 @@
         button:hover {
             background: rgb(90, 86, 110);
             border-color: rgb(59, 59, 59);
+            transform: scale(1.07);     
         }
         .Instruction{
             border: 1px solid black;
@@ -100,7 +98,6 @@
         }
         label {
             font-size: 2rem;
-            color: rgb(41, 40, 40);
         }
         input{
             width: 250px;
@@ -128,6 +125,25 @@
             justify-content: space-evenly;
             align-items: center;
         }
+        #start{
+            background-color: rgb(54, 179, 75);
+            color: white;
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+        #start:hover {
+            transform: scale(1.07);     
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        .start{
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -136,29 +152,47 @@
         <div class="Instruction">
             <Span>Instruction:</Span>
             <ol>
-                <li>You can change the Match point by the "Match Point" Option given</li>
-                <li>Default Match point is 5</li>
-                <li>Click on any option to select you choice</li>
-                <li>Computer will also choose randomly any option</li>
-                <li>Result will be shown in the given Screens</li>
+                <li>Enter the Username if kept empty it choose "Player" as name.</li>
+                <li>Enter Match Point if not Default match point is 5.</li>
+                <li>Click on Start Button To start.</li>
+                <li>If want to stop in between Click on stop button.</li>
+                <li>click on reset button to Reset to original setting.</li>
+            </ol>
+            <Span>Rules to Play:</Span>
+            <ol>
+                <li>Click on any option to select you choice.</li>
+                <li>Computer will also choose randomly any option.</li>
+                <li>Result will be shown in the given Screens.</li>
                 <li>
                     Result will be decides as:
                     <ul>
-                        <li>Rock beats Scissor</li>
-                        <li>Scissor beats Paper</li>
-                        <li>Paper beats Rock</li>
+                        <li>Rock beats Scissor.</li>
+                        <li>Scissor beats Paper.</li>
+                        <li>Paper beats Rock.</li>
                     </ul>
                 </li>
-                <li>Start Playing and Enjoy</li>
+                <li>Start Playing and Enjoy.</li>
             </ol>
         </div>
         <br><hr><br>
-        <div class="username">
-            <label>Username:</label>
-            <div>
-                <input type="text" placeholder="Player">
-                <button id="Enter">Enter</button>
+        <div class="Flow">
+            <div class="username">
+                <label>Username:</label>
+                <div>
+                    <input type="text" placeholder="Player">
+                    <button id="Enter">Enter</button>
+                </div>
             </div>
+            <br>
+            <div class="Match">
+                <label id="x">Match Point: 5</label>
+                <button id="game">Match Points</button>
+            </div>
+            <br>
+            <div class="start">
+                <button id="start">Start Game</button>
+            </div>
+            <br><hr><br>
         </div>
         <br><br>
         <div class="Options">
@@ -166,11 +200,7 @@
             <img src="paper.png" alt="Paper" id="Paper">
             <img src="scissor.png" alt="Scissor" id="Scissor">
         </div>
-        <br><br>
-        <div class="Match">
-            <big>Current Match Point: 5</big>
-            <button id="game">Match Points</button>
-        </div>
+        <br>
         <div class="Result">
             <div id="user">
                 <p id="One">0</p>
@@ -197,10 +227,17 @@
         const choose=document.querySelectorAll("img");
         const btn1=document.querySelector("#game");
         const btn2=document.querySelector("#Enter");
+        const btn3=document.querySelector("#start");
         let uval=0;
         let cval=0;
         let a=5;
         let Player="Player";
+        function main(e){
+            let userChoice=e.target.id;
+            const l=['Rock','Scissor','Paper'];
+            let compChoice=l[Math.floor(Math.random()*3)];
+            check(userChoice,compChoice);
+        };
         function reset(){
             let result="";
             const his=document.querySelector(".History");
@@ -211,10 +248,18 @@
             }else if(compScore.innerText==a){
                 result="Computer Wins";
                 para.style.color="red";
-            }else{
+            }else if(userScore.innerText==compScore.innerText){
                 result="Its a Draw";
                 para.style.color="black";
-            }
+            }else{
+                result="Match ended in between"
+                para.style.color="black";
+                Player="Player";
+                document.querySelector("#name").innerText=Player;
+                document.querySelector("input").value="";
+                a=5;
+                document.querySelector("#x").innerHTML=`Current Match Point: ${a} `
+            };
             his.innerHTML=`${Player}Score = ${userScore.innerText}<br>ComputerScore = ${compScore.innerText}`; 
             para.innerHTML=`${result}`;
             his.prepend(para);
@@ -236,12 +281,12 @@
                 userScore.innerText=uval;
             }else if(x==0){
                 message.style.backgroundColor="black";
-            }
+            };
             message.innerText=res;
             if(userScore.innerText==a || compScore.innerText==a){
                     reset()
-            }
-        }
+            };
+        };
         function check(user,comp){
             const checker={Rock:3,Scissor:2,Paper:1};
             if(user===comp){
@@ -254,47 +299,74 @@
                 update(`${Player} Wins! ${Player}'s ${user} beats Computer's ${comp}`,2);
             }else{
                 update(`Computer Wins! Computer's ${comp} beats ${Player}'s ${user}`,1);
-            }
-        }
-        choose.forEach(option=>{
-            option.addEventListener("click",()=>{
-                let userChoice=option.getAttribute("id");
-                const l=['Rock','Scissor','Paper'];
-                let compChoice=l[Math.floor(Math.random()*3)];
-                check(userChoice,compChoice);
-            });
-        });
+            };
+        };
         btn1.addEventListener("click",()=>{
             if (userScore.innerText==0 && compScore.innerText==0){
                 while (true){
                     a=prompt("Enter the Highest winning point:");
                     if (/^[1-9]\d*$/.test(a)){
                         a=Number(a);
-                        document.querySelector("big").innerHTML=`Current Match Point: ${a} `
+                        document.querySelector("#x").innerHTML=`Current Match Point: ${a} `;
                         break
                     }else {
                         alert("Enter Only A valid match point:")
-                    }
-                }
+                    };
+                };
             }else{
                 alert("Game is going on You can not change Game points in between")
-            }
+            };
         });
         btn2.addEventListener("click",()=>{
+            let b=document.querySelector("input").value;
             if (userScore.innerText==0 && compScore.innerText==0){
-                let b=document.querySelector("input").value;
+                while (true){
+                    if(b.toLowerCase()==="computer"){
+                        alert("Computer cannot be used as name");
+                        document.querySelector("input").value="";
+                        return;
+                    }else{
+                        break;
+                    };
+                };
                 if(b===''){
-                    //does nothing
+                    Player="Player"
+                    document.querySelector("#name").innerText=Player;
                 }else{
                     Player=b;
                     document.querySelector("#name").innerText=Player;
                 };
             }else{
                 alert("Game is going on cannot change Name in Between")
-                document.querySelector("input").value=Player;
+                if(Player=="Player"){
+                    document.querySelector("input").value="";
+                }else{
+                    document.querySelector("input").value=Player;
+                };
             }
         });
-    
+        btn3.addEventListener("click",()=>{
+            if (btn3.innerText=="Start Game"){
+                btn3.innerText="Stop Game";
+                btn3.style.backgroundColor="red";
+                btn=document.createElement("button");
+                btn.innerText="Reset Game";
+                btn3.after(btn);
+                choose.forEach(option=>{
+                    option.addEventListener("click",main);
+                });
+                btn.addEventListener("click",()=>{
+                    reset();
+                })
+            }else{
+                btn3.innerText="Start Game";
+                btn3.style.backgroundColor="green";
+                btn.remove();
+                choose.forEach(option=>{
+                    option.removeEventListener("click",main);
+                });
+            }
+        });
     </script>
 </body>
 </html>
