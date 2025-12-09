@@ -258,10 +258,11 @@
         const btn1=document.querySelector("#game");
         const btn2=document.querySelector("#Enter");
         const btn3=document.querySelector("#start");
+        let Player="Player";
         let uval=0;
         let cval=0;
         let a=5;
-        let Player="Player";
+        let p=0;
 
         //main
         function main(e){
@@ -278,17 +279,18 @@
         // Reset all things
         function reset(){
             let result="";
-            let p=0;
             let b="";   
             const his=document.querySelector(".History");
             const para=document.createElement("p");
             if (userScore.innerText==a){
                 result=`${Player} Wins`;
                 para.style.color="green";
+                p=0;
             }else if(compScore.innerText==a){
                 result="Computer Wins";
                 para.style.color="red";
-            }else if(userScore.innerText==compScore.innerText){
+                p=0;
+            }else if(userScore.innerText==compScore.innerText && p==0){
                 result="Its a Draw";
                 para.style.color="#FFC000";
             }else{
@@ -406,6 +408,9 @@
                     option.addEventListener("click",main);
                 });
                 btn.addEventListener("click",()=>{
+                    if (userScore.innerText==compScore.innerText){
+                        p=1;
+                    };
                     reset();
                 })
             }else{
