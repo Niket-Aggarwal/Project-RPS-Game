@@ -46,8 +46,12 @@
         }
         big{
             font-size: 2rem;
+            margin-left: 5%;
+        }
+        .Match{
             display: flex;
             justify-content: space-evenly;
+            align-items: center;
         }
         span{
             font-size: 1.5rem;
@@ -83,7 +87,7 @@
         }
         button:hover {
             background: rgb(90, 86, 110);
-            border-color: white;
+            border-color: rgb(59, 59, 59);
         }
         .Instruction{
             border: 1px solid black;
@@ -93,6 +97,36 @@
         }
         li{
             font-size: 1.2rem;
+        }
+        label {
+            font-size: 2rem;
+            color: rgb(41, 40, 40);
+        }
+        input{
+            width: 250px;
+            padding: 10px;
+            background: rgb(66, 63, 80);
+            border: 2px solid #ffffff34;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: 0.3s ease;
+            outline: none;
+        }
+        input::placeholder {
+            color: #d1d1d1;
+            opacity: 0.8;
+        }
+        input:focus {
+            border-color: rgb(59, 59, 59);
+            background: rgb(80, 77, 98);
+            box-shadow: 0 0 5px rgba(255,255,255,0.3);
+        }
+        .username{
+            margin:auto;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
         }
     </style>
 </head>
@@ -118,8 +152,14 @@
                 <li>Start Playing and Enjoy</li>
             </ol>
         </div>
-        <br>
-        <hr>
+        <br><hr><br>
+        <div class="username">
+            <label>Username:</label>
+            <div>
+                <input type="text" placeholder="Player">
+                <button id="Enter">Enter</button>
+            </div>
+        </div>
         <br><br>
         <div class="Options">
             <img src="rock.png" alt="Rock" id="Rock">
@@ -127,15 +167,18 @@
             <img src="scissor.png" alt="Scissor" id="Scissor">
         </div>
         <br><br>
-        <big>Current Match Score: <button>Match Points</button></big>
+        <div class="Match">
+            <big>Current Match Point: 5</big>
+            <button id="game">Match Points</button>
+        </div>
         <div class="Result">
             <div id="user">
                 <p id="One">0</p>
-                <span>PLAYER</span>
+                <span id="name">Player</span>
             </div>
             <div id="comp" >
                 <p id="Two">0</p>
-                <span>COMPUTER</span>
+                <span>Computer</span>
             </div>
         </div>
         <div class="Message">
@@ -152,32 +195,34 @@
         const compScore=document.querySelector("#Two");
         const message=document.querySelector(".Message");
         const choose=document.querySelectorAll("img");
-        const btn=document.querySelector("button");
+        const btn1=document.querySelector("#game");
+        const btn2=document.querySelector("#Enter");
         let uval=0;
         let cval=0;
         let a=5;
+        let Player="Player";
         function reset(){
             let result="";
             const his=document.querySelector(".History");
             const para=document.createElement("p");
-            if (userScore.innerText>compScore.innerText){
-                result="Player Wins";
+            if (userScore.innerText==a){
+                result=`${Player} Wins`;
                 para.style.color="green";
-            }else if(userScore.innerText<compScore.innerText){
+            }else if(compScore.innerText==a){
                 result="Computer Wins";
                 para.style.color="red";
             }else{
                 result="Its a Draw";
                 para.style.color="black";
             }
-            his.innerHTML=`PlayerScore = ${userScore.innerText}<br>ComputerScore = ${compScore.innerText}`; 
+            his.innerHTML=`${Player}Score = ${userScore.innerText}<br>ComputerScore = ${compScore.innerText}`; 
             para.innerHTML=`${result}`;
             his.prepend(para);
             uval=0;
             cval=0;
             userScore.innerText=0;
             compScore.innerText=0;
-            message.innerText="See the Result (Can change Game point of next match)";
+            message.innerText="See the Result (You can now change the name or match points)";
             message.style.backgroundColor="black";
         }
         function update(res,x){
@@ -202,13 +247,13 @@
             if(user===comp){
                 update(`Draw! Both choose ${user}`,0);
             }else if(user=="Rock" && comp=="Paper"){
-                update(`Computer Wins! Computer's ${comp} beats Player's ${user}`,1);
+                update(`Computer Wins! Computer's ${comp} beats ${Player}'s ${user}`,1);
             }else if(user=="Paper" && comp=="Rock"){
-                update(`Player Wins! Player's ${user} beats Computer's ${comp}`,2);
+                update(`${Player} Wins! ${Player}'s ${user} beats Computer's ${comp}`,2);
             }else if(checker[user]>checker[comp]){
-                update(`Player Wins! Player's ${user} beats Computer's ${comp}`,2);
+                update(`${Player} Wins! ${Player}'s ${user} beats Computer's ${comp}`,2);
             }else{
-                update(`Computer Wins! Computer's ${comp} beats Player's ${user}`,1);
+                update(`Computer Wins! Computer's ${comp} beats ${Player}'s ${user}`,1);
             }
         }
         choose.forEach(option=>{
@@ -219,12 +264,13 @@
                 check(userChoice,compChoice);
             });
         });
-        btn.addEventListener("click",()=>{
+        btn1.addEventListener("click",()=>{
             if (userScore.innerText==0 && compScore.innerText==0){
                 while (true){
                     a=prompt("Enter the Highest winning point:");
                     if (/^[1-9]\d*$/.test(a)){
                         a=Number(a);
+                        document.querySelector("big").innerHTML=`Current Match Point: ${a} `
                         break
                     }else {
                         alert("Enter Only A valid match point:")
@@ -234,6 +280,21 @@
                 alert("Game is going on You can not change Game points in between")
             }
         });
+        btn2.addEventListener("click",()=>{
+            if (userScore.innerText==0 && compScore.innerText==0){
+                let b=document.querySelector("input").value;
+                if(b===''){
+                    //does nothing
+                }else{
+                    Player=b;
+                    document.querySelector("#name").innerText=Player;
+                };
+            }else{
+                alert("Game is going on cannot change Name in Between")
+                document.querySelector("input").value=Player;
+            }
+        });
+    
     </script>
 </body>
 </html>
